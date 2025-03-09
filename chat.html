@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skill Trade Chat</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #121212;
+            color: #FFFFFF;
+        }
+
+        .chat-container {
+            width: 360px;
+            height: 600px;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            background-color: #1E1E1E;
+            border: 1px solid #5D6EF3;
+        }
+
+        .chat-header {
+            background: linear-gradient(135deg, #5C24FF, #5D6EF3);
+            color: white;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .chat-header h3 {
+            margin-left: 10px;
+            font-weight: 500;
+        }
+
+        .chat-header .bot-icon {
+            width: 32px;
+            height: 32px;
+            background-color: #FC4FF6;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .bot-icon svg {
+            width: 20px;
+            height: 20px;
+            fill: #FFFFFF;
+        }
+
+        .chat-header .close-btn {
+            cursor: pointer;
+            font-size: 20px;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 16px;
+            overflow-y: auto;
+            background-color: #222222;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .message {
+            max-width: 80%;
+            padding: 12px 16px;
+            border-radius: 18px;
+            word-wrap: break-word;
+        }
+
+        .user-message {
+            align-self: flex-end;
+            background: linear-gradient(135deg, #D94FD5, #FF3BFF);
+            color: white;
+        }
+
+        .bot-message {
+            align-self: flex-start;
+            background-color: #2A2A2A;
+            color: #ECBFBF;
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            border-left: 3px solid #5BE1FF;
+        }
+
+        .bot-message .bot-icon-small {
+            width: 24px;
+            height: 24px;
+            background: linear-gradient(135deg, #5C24FF, #5BDAFF);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-right: 8px;
+        }
+
+        .bot-message .bot-icon-small svg {
+            width: 14px;
+            height: 14px;
+            fill: white;
+        }
+
+        .bot-message .message-content {
+            line-height: 1.4;
+        }
+
+        .chat-input {
+            padding: 16px;
+            border-top: 1px solid #5D6EF3;
+            display: flex;
+            align-items: center;
+            background-color: #1E1E1E;
+        }
+
+        .input-field {
+            flex: 1;
+            padding: 12px 16px;
+            border-radius: 24px;
+            border: 1px solid #8593E8;
+            background-color: #2A2A2A;
+            margin-right: 8px;
+            outline: none;
+            color: #FFFFFF;
+        }
+
+        .input-field::placeholder {
+            color: #B8B2FF;
+        }
+
+        .send-btn, .emoji-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 20px;
+            color: #5BDAFF;
+            padding: 4px;
+        }
+
+        .emoji {
+            font-size: 16px;
+            vertical-align: middle;
+        }
+
+        /* Loading indicator */
+        .typing-indicator {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 8px 12px;
+            background-color: #2A2A2A;
+            border-radius: 18px;
+            align-self: flex-start;
+            margin-bottom: 8px;
+        }
+
+        .typing-indicator span {
+            width: 8px;
+            height: 8px;
+            background-color: #FC4FF6;
+            border-radius: 50%;
+            display: inline-block;
+            animation: typing 1.4s infinite ease-in-out both;
+        }
+
+        .typing-indicator span:nth-child(1) {
+            animation-delay: 0s;
+        }
+
+        .typing-indicator span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .typing-indicator span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes typing {
+            0% {
+                transform: scale(0.6);
+                opacity: 0.6;
+            }
+            50% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(0.6);
+                opacity: 0.6;
+            }
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #1E1E1E;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #5D6EF3;
+            border-radius: 6px;
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-header">
+            <div style="display: flex; align-items: center;">
+                <div class="bot-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.38-1 1.72V7h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h2V5.72c-.6-.34-1-.98-1-1.72a2 2 0 0 1 2-2m3 13a1 1 0 0 0-1-1a1 1 0 0 0-1 1a1 1 0 0 0 1 1a1 1 0 0 0 1-1m-4 0a1 1 0 0 0-1-1a1 1 0 0 0-1 1a1 1 0 0 0 1 1a1 1 0 0 0 1-1m4-4a1 1 0 0 0-1-1a1 1 0 0 0-1 1a1 1 0 0 0 1 1a1 1 0 0 0 1-1m-4 0a1 1 0 0 0-1-1a1 1 0 0 0-1 1a1 1 0 0 0 1 1a1 1 0 0 0 1-1Z"/>
+                    </svg>
+                </div>
+                <h3>Skill Assistant</h3>
+            </div>
+            <div class="close-btn">×</div>
+        </div>
+        <div class="chat-messages" id="chatMessages">
+            <!-- Messages will be added here -->
+        </div>
+        <div class="chat-input">
+            <input type="text" class="input-field" id="userInput" placeholder="Ask about skills or trades...">
+            <button class="emoji-btn">😊</button>
+            <button class="send-btn" id="sendButton">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#5BDAFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="22" y1="2" x2="11" y2="13"></line>
+                    <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Your Gemini API key
+        const API_KEY = "AIzaSyAywH4OiJTsP1Ph3Qe1OtR04hjXwGdQHYI";
+        const GEMINI_API_ENDPOINT = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            const chatMessages = document.getElementById('chatMessages');
+            const userInput = document.getElementById('userInput');
+            const sendButton = document.getElementById('sendButton');
+            
+            // Add initial bot message
+            addBotMessage("Welcome to SkillTrade! I can help you find skills to learn, connect with mentors, or arrange skill exchanges. What are you looking for today?");
+            
+            // Send message when button clicked
+            sendButton.addEventListener('click', sendMessage);
+            
+            // Send message when Enter key is pressed
+            userInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    sendMessage();
+                }
+            });
+            
+            function sendMessage() {
+                const message = userInput.value.trim();
+                if (message === '') return;
+                
+                // Add user message to chat
+                addUserMessage(message);
+                userInput.value = '';
+                
+                // Show typing indicator
+                showTypingIndicator();
+                
+                // Call Gemini API
+                callGeminiAPI(message);
+            }
+            
+            function addUserMessage(message) {
+                const messageElement = document.createElement('div');
+                messageElement.classList.add('message', 'user-message');
+                messageElement.innerText = message;
+                chatMessages.appendChild(messageElement);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+            
+            function addBotMessage(message) {
+                const messageElement = document.createElement('div');
+                messageElement.classList.add('message', 'bot-message');
+                
+                const botIcon = document.createElement('div');
+                botIcon.classList.add('bot-icon-small');
+                botIcon.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.38-1 1.72V7h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h2V5.72c-.6-.34-1-.98-1-1.72a2 2 0 0 1 2-2Z" fill="white"/>
+                    </svg>`;
+                
+                const messageContent = document.createElement('div');
+                messageContent.classList.add('message-content');
+                messageContent.innerText = message;
+                
+                messageElement.appendChild(botIcon);
+                messageElement.appendChild(messageContent);
+                chatMessages.appendChild(messageElement);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+            
+            function showTypingIndicator() {
+                const indicator = document.createElement('div');
+                indicator.classList.add('typing-indicator');
+                indicator.id = 'typingIndicator';
+                indicator.innerHTML = `
+                    <span></span>
+                    <span></span>
+                    <span></span>`;
+                chatMessages.appendChild(indicator);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+            
+            function hideTypingIndicator() {
+                const indicator = document.getElementById('typingIndicator');
+                if (indicator) {
+                    indicator.remove();
+                }
+            }
+            
+            function callGeminiAPI(message) {
+                // Prepare request body for Gemini API
+                const requestBody = {
+                    contents: [{
+                        parts: [{
+                            text: message
+                        }]
+                    }],
+                    generationConfig: {
+                        temperature: 0.7,
+                        maxOutputTokens: 800
+                    }
+                };
+                
+                // Simulating API call with a timeout
+                setTimeout(() => {
+                    hideTypingIndicator();
+                    
+                    // Skill trade specific responses
+                    let response = "I'm here to help with your skill trading needs. Could you tell me more about what skills you're looking to learn or share?";
+                    
+                    if (message.toLowerCase().includes("hello") || message.toLowerCase().includes("hi")) {
+                        response = "Hello! Welcome to SkillTrade. I can help you find skill mentors, arrange skill exchanges, or browse trending skills in our community.";
+                    } else if (message.toLowerCase().includes("thank")) {
+                        response = "You're welcome! If you need any more help finding skill mentors or setting up a trade, just let me know!";
+                    } else if (message.toLowerCase().includes("skill") && message.toLowerCase().includes("learn")) {
+                        response = "Great! We have many mentors who can help you learn new skills. What specific area are you interested in? Programming, design, music, cooking, languages, or something else?";
+                    } else if (message.toLowerCase().includes("teach") || message.toLowerCase().includes("offer")) {
+                        response = "Fantastic! Sharing your skills helps our community grow. Would you like me to help you create a mentor profile or set up a skill trade offer?";
+                    } else if (message.toLowerCase().includes("how") && message.toLowerCase().includes("work")) {
+                        response = "SkillTrade lets you exchange skills with others! You can offer to teach something you're good at in exchange for learning something new. Our platform uses skill tokens to make fair exchanges, and our rating system ensures quality experiences.";
+                    }
+                    
+                    addBotMessage(response);
+                }, 1500);
+                
+                // Uncomment for actual API call
+                
+                fetch(GEMINI_API_ENDPOINT, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(requestBody)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    hideTypingIndicator();
+                    // Extract the response text from the Gemini API response
+                    const responseText = data.candidates[0].content.parts[0].text;
+                    addBotMessage(responseText);
+                })
+                .catch(error => {
+                    hideTypingIndicator();
+                    console.error('Error:', error);
+                    addBotMessage("I'm sorry, I encountered an error. Please try again later.");
+                });
+                
+            }
+            
+            // Close button functionality
+            document.querySelector('.close-btn').addEventListener('click', function() {
+                // You can implement close behavior here
+                alert('Chat closed! You can reopen it anytime from your dashboard.');
+            });
+        });
+    </script>
+</body>
+</html>

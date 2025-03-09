@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SkillSwap - Trade Skills Platform</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <style>
+:root {
+    /* New color palette */
+    --neon-magenta: #FF3BFF;
+    --soft-magenta: #D94FD5;
+    --pale-pink: #ECBFBF;
+    --bright-blue: #5D6EF3;
+    --deep-purple: #5C24FF;
+    --cyan: #5BDAFF;
+    --black: #000000;
+    --hot-pink: #FC4FF6;
+    --white: #FFFFFF;
+    --lavender: #B8B2FF;
+    --periwinkle: #8593E8;
+    --light-cyan: #5BE1FF;
+  }
+  
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+    transition: all 0.3s ease;
+  }
+  
+  body {
+    background-color: var(--black);
+    color: var(--white);
+    overflow-x: hidden;
+  }
+  
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+  
+  /* Header Styles */
+  header {
+    background: linear-gradient(to right, var(--deep-purple), var(--black));
+    padding: 1rem;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 4px 30px rgba(255, 59, 255, 0.3);
+  }
+  
+  .header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--light-cyan);
+    cursor: pointer;
+  }
+  
+  .logo span {
+    color: var(--neon-magenta);
+  }
+  
+  .logo:hover {
+    transform: scale(1.05);
+  }
+  
+  .nav-menu {
+    display: flex;
+    gap: 3rem;
+    align-items: center;
+    height: 100%;
+    
+  }
+  
+  .nav-link {
+    color: var(--white);
+    text-decoration: none;
+    font-weight: 500;
+    position: relative;
+    padding: 5px;
+  }
+  
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: var(--cyan);
+    transition: width 0.3s ease;
+  }
+  
+  .nav-link:hover::after {
+    width: 100%;
+  }
+  
+  .nav-link:hover {
+    color: var(--light-cyan);
+  }
+  
+  .profile-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(45deg, var(--hot-pink), var(--neon-magenta));
+    cursor: pointer;
+  }
+  
+  .profile-icon:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 15px var(--neon-magenta);
+  }
+  
+  /* Main Content */
+  main {
+    padding: 2rem 0;
+  }
+  
+  .dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+  }
+  
+  h1 {
+    font-size: 2.5rem;
+    background: linear-gradient(to right, var(--light-cyan), var(--neon-magenta));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    margin-bottom: 1rem;
+  }
+  
+  .search-bar {
+    display: flex;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50px;
+    padding: 0.5rem 1rem;
+    width: 300px;
+    align-items: center;
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+  
+  .search-bar input {
+    background: transparent;
+    border: none;
+    color: var(--white);
+    outline: none;
+    width: 100%;
+    padding: 0.5rem;
+  }
+  
+  .search-bar input::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+  }
+  
+  .filter-buttons {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+  }
+  
+  .filter-btn {
+    background: linear-gradient(45deg, var(--deep-purple), var(--bright-blue));
+    color: var(--white);
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 50px;
+    cursor: pointer;
+    font-weight: 500;
+    box-shadow: 0 4px 20px rgba(92, 36, 255, 0.3);
+  }
+  
+  .filter-btn:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(92, 36, 255, 0.5);
+  }
+  
+  .filter-btn.active {
+    background: linear-gradient(45deg, var(--cyan), var(--hot-pink));
+  }
+  
+  .dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+  }
+  
+  .card {
+    background: rgba(0, 0, 0, 0.8);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(184, 178, 255, 0.2);
+    backdrop-filter: blur(10px);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+  }
+  
+  .card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 40px rgba(255, 59, 255, 0.4);
+  }
+  
+  .card-accent {
+    height: 5px;
+    background: linear-gradient(to right, var(--light-cyan), var(--neon-magenta));
+  }
+  
+  .card-content {
+    padding: 1.5rem;
+  }
+  
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+  
+  .card h3 {
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+    color: var(--white);
+  }
+  
+  .skill-tag {
+    background: rgba(91, 225, 255, 0.2);
+    color: var(--light-cyan);
+    padding: 0.3rem 0.8rem;
+    border-radius: 50px;
+    font-size: 0.8rem;
+    display: inline-block;
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  .user-info {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .user-avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: linear-gradient(45deg, var(--cyan), var(--bright-blue));
+  }
+  
+  .action-btn {
+    background: transparent;
+    color: var(--white);
+    border: 1px solid var(--cyan);
+    padding: 0.5rem 1rem;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .action-btn:hover {
+    background: var(--light-cyan);
+    color: var(--black);
+  }
+  
+  /* Proposals Section */
+  .proposals-section {
+    margin-top: 3rem;
+  }
+  
+  .trade-proposals {
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 20px;
+    padding: 2rem;
+    margin-top: 2rem;
+    border: 1px solid rgba(184, 178, 255, 0.2);
+  }
+  
+  .proposal-item {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 1rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    align-items: center;
+  }
+  
+  .proposal-item:last-child {
+    border-bottom: none;
+  }
+  
+  .proposal-user {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  .proposal-user-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: linear-gradient(45deg, var(--neon-magenta), var(--hot-pink));
+  }
+  
+  .proposal-details {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.7);
+  }
+  
+  .proposal-actions {
+    display: flex;
+    gap: 0.5rem;
+  }
+  
+  .accept-btn {
+    background: linear-gradient(to right, var(--light-cyan), var(--lavender));
+    color: var(--black);
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 50px;
+    cursor: pointer;
+    font-weight: 500;
+  }
+  
+  .accept-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 15px rgba(184, 178, 255, 0.7);
+  }
+  
+  .decline-btn {
+    background: transparent;
+    color: var(--hot-pink);
+    border: 1px solid var(--hot-pink);
+    padding: 0.5rem 1rem;
+    border-radius: 50px;
+    cursor: pointer;
+  }
+  
+  .decline-btn:hover {
+    background: rgba(252, 79, 246, 0.2);
+  }
+  
+  /* Add Listing Button */
+  .add-listing-btn {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(45deg, var(--hot-pink), var(--neon-magenta));
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--white);
+    font-size: 1.5rem;
+    cursor: pointer;
+    box-shadow: 0 5px 20px rgba(255, 59, 255, 0.5);
+    z-index: 100;
+  }
+  
+  .add-listing-btn:hover {
+    transform: scale(1.1) rotate(90deg);
+    box-shadow: 0 8px 30px rgba(255, 59, 255, 0.7);
+  }
+  
+  /* Loading Animation */
+  .loading-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(to right, var(--light-cyan), var(--hot-pink), var(--neon-magenta), var(--light-cyan));
+    background-size: 200% 100%;
+    animation: loading 2s infinite;
+    z-index: 1000;
+  }
+  
+  @keyframes loading {
+    0% {
+      background-position: 0% 0;
+    }
+    100% {
+      background-position: 200% 0;
+    }
+  }
+  
+  /* Card Glow Effect */
+  .glow-effect {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at var(--x) var(--y), 
+                rgba(255, 59, 255, 0.4) 0%, 
+                rgba(91, 218, 255, 0.2) 25%, 
+                transparent 50%);
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+    mix-blend-mode: screen;
+  }
+  
+  /* Notification Badge */
+  .notification-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--hot-pink);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.7rem;
+    font-weight: bold;
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .nav-menu {
+      display: none;
+    }
+  
+    .dashboard-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+  
+    .search-bar {
+      width: 100%;
+    }
+  
+    .proposal-item {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+  
+    .proposal-actions {
+      justify-content: flex-end;
+    }
+  }
+  </style>
+</head>
+<body>
+  <div class="loading-bar"></div>
+
+  <header>
+    <div class="container">
+      <div class="header-content">
+        <div class="logo">Skill<span>Swap</span></div>
+        <nav class="nav-menu">
+          <!-- <a href="#" class="nav-link">Dashboard</a>
+          <a href="#" class="nav-link">Log in</a> -->
+          <!-- <a href="#" class="nav-link">Messages</a>
+          <a href="#" class="nav-link">Community</a> -->
+        </nav>
+        <div class="profile-icon" style="position: relative;">
+          <i class="fas fa-user"></i>
+          <div class="notification-badge">3</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="dashboard-header">
+      <div>
+        <h1>Skills Marketplace</h1>
+        <p>Find skills to trade or offer your expertise</p>
+      </div>
+      <div class="search-bar">
+        <input type="text" placeholder="Search skills...">
+      </div>
+    </div>
+
+    <div class="filter-buttons">
+      <button class="filter-btn active">All Skills</button>
+      <button class="filter-btn">Design</button>
+      <button class="filter-btn">Development</button>
+      <button class="filter-btn">Marketing</button>
+      <button class="filter-btn">Music</button>
+      <button class="filter-btn">Language</button>
+    </div>
+
+    <div class="dashboard-grid">
+      <!-- Card 1 -->
+      <div class="card">
+        <div class="glow-effect"></div>
+        <div class="card-accent"></div>
+        <div class="card-content">
+          <div class="card-header">
+            <h3>UI/UX Design</h3>
+          </div>
+          <div class="skill-tags">
+            <span class="skill-tag">Design</span>
+            <span class="skill-tag">Figma</span>
+            <span class="skill-tag">Prototyping</span>
+          </div>
+          <p>I can create beautiful, intuitive interfaces for your web or mobile app. Looking to trade for coding help.</p>
+          <div class="card-footer">
+            <div class="user-info">
+              <div class="user-avatar"></div>
+              <span>@designerAlex</span>
+            </div>
+            <button class="action-btn"><a href="./after_course_purchase_website.html" target="_blank" rel="noopener noreferrer">Purchase</a></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="card">
+        <div class="glow-effect"></div>
+        <div class="card-accent"></div>
+        <div class="card-content">
+          <div class="card-header">
+            <h3>React Development</h3>
+          </div>
+          <div class="skill-tags">
+            <span class="skill-tag">Code</span>
+            <span class="skill-tag">React</span>
+            <span class="skill-tag">Frontend</span>
+          </div>
+          <p>3+ years of React experience. Can help with components, hooks, state management. Need help with logo design.</p>
+          <div class="card-footer">
+            <div class="user-info">
+              <div class="user-avatar"></div>
+              <span>@reactDev</span>
+            </div>
+            <button class="action-btn"><a href="./after_course_purchase_website.html" target="_blank" rel="noopener noreferrer">Purchase</a></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="card">
+        <div class="glow-effect"></div>
+        <div class="card-accent"></div>
+        <div class="card-content">
+          <div class="card-header">
+            <h3>Music Production</h3>
+          </div>
+          <div class="skill-tags">
+            <span class="skill-tag">Music</span>
+            <span class="skill-tag">Ableton</span>
+            <span class="skill-tag">Mixing</span>
+          </div>
+          <p>I can produce, mix and master your tracks. Specializing in electronic music. Looking for video editing help.</p>
+          <div class="card-footer">
+            <div class="user-info">
+              <div class="user-avatar"></div>
+              <span>@beatMaker</span>
+            </div>
+            <button class="action-btn"><a href="./after_course_purchase_website.html" target="_blank" rel="noopener noreferrer">Purchase</a></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="card">
+        <div class="glow-effect"></div>
+        <div class="card-accent"></div>
+        <div class="card-content">
+          <div class="card-header">
+            <h3>Social Media Marketing</h3>
+          </div>
+          <div class="skill-tags">
+            <span class="skill-tag">Marketing</span>
+            <span class="skill-tag">Instagram</span>
+            <span class="skill-tag">TikTok</span>
+          </div>
+          <p>I'll help grow your social media presence with effective strategies. Need website development in exchange.</p>
+          <div class="card-footer">
+            <div class="user-info">
+              <div class="user-avatar"></div>
+              <span>@socialGuru</span>
+            </div>
+            <button class="action-btn"><a href="./after_course_purchase_website.html" target="_blank" rel="noopener noreferrer">Purchase</a></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 5 -->
+      <div class="card">
+        <div class="glow-effect"></div>
+        <div class="card-accent"></div>
+        <div class="card-content">
+          <div class="card-header">
+            <h3>Japanese Language</h3>
+          </div>
+          <div class="skill-tags">
+            <span class="skill-tag">Language</span>
+            <span class="skill-tag">Japanese</span>
+            <span class="skill-tag">Translation</span>
+          </div>
+          <p>Native Japanese speaker offering lessons or translation services. Looking for graphic design skills in return.</p>
+          <div class="card-footer">
+            <div class="user-info">
+              <div class="user-avatar"></div>
+              <span>@tokyoTeacher</span>
+            </div>
+            <button class="action-btn"><a href="./after_course_purchase_website.html" target="_blank" rel="noopener noreferrer">Purchase</a></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 6 -->
+      <div class="card">
+        <div class="glow-effect"></div>
+        <div class="card-accent"></div>
+        <div class="card-content">
+          <div class="card-header">
+            <h3>3D Modeling</h3>
+          </div>
+          <div class="skill-tags">
+            <span class="skill-tag">Design</span>
+            <span class="skill-tag">Blender</span>
+            <span class="skill-tag">3D</span>
+          </div>
+          <p>I create detailed 3D models and animations. Looking to trade for copywriting or content creation.</p>
+          <div class="card-footer">
+            <div class="user-info">
+              <div class="user-avatar"></div>
+              <span>@3Dartist</span>
+            </div>
+            <button class="action-btn"><a href="./after_course_purchase_website.html" target="_blank" rel="noopener noreferrer">Purchase</a></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="proposals-section">
+      <h2>My Trade Proposals</h2>
+      <div class="trade-proposals">
+        <!-- Proposal 1 -->
+        <div class="proposal-item">
+          <div class="proposal-user">
+            <div class="proposal-user-avatar"></div>
+            <div>
+              <h4>@codeWizard</h4>
+              <div class="proposal-details">Python Development</div>
+            </div>
+          </div>
+          <div>
+            <p>I can help with your data analysis project. Would love to trade for your UI design skills.</p>
+            <div class="skill-tags">
+              <span class="skill-tag">Python</span>
+              <span class="skill-tag">Data</span>
+            </div>
+          </div>
+          <div class="proposal-actions">
+            <button class="accept-btn">Accept</button>
+            <button class="decline-btn">Decline</button>
+          </div>
+        </div>
+
+        <!-- Proposal 2 -->
+        <div class="proposal-item">
+          <div class="proposal-user">
+            <div class="proposal-user-avatar"></div>
+            <div>
+              <h4>@videoEditor</h4>
+              <div class="proposal-details">Video Production</div>
+            </div>
+          </div>
+          <div>
+            <p>I'd like to trade my professional video editing services for your React development expertise.</p>
+            <div class="skill-tags">
+              <span class="skill-tag">Video</span>
+              <span class="skill-tag">Editing</span>
+            </div>
+          </div>
+          <div class="proposal-actions">
+            <button class="accept-btn">Accept</button>
+            <button class="decline-btn">Decline</button>
+          </div>
+        </div>
+
+        <!-- Proposal 3 -->
+        <div class="proposal-item">
+          <div class="proposal-user">
+            <div class="proposal-user-avatar"></div>
+            <div>
+              <h4>@contentCreator</h4>
+              <div class="proposal-details">Content Writing</div>
+            </div>
+          </div>
+          <div>
+            <p>I can write SEO-optimized blog posts for your website in exchange for social media marketing help.</p>
+            <div class="skill-tags">
+              <span class="skill-tag">Writing</span>
+              <span class="skill-tag">SEO</span>
+            </div>
+          </div>
+          <div class="proposal-actions">
+            <button class="accept-btn">Accept</button>
+            <button class="decline-btn">Decline</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <div class="add-listing-btn">+</div>
+
+  <script>
+    // Card hover effect
+    const cards = document.querySelectorAll('.card');
+    
+    cards.forEach(card => {
+      const glowEffect = card.querySelector('.glow-effect');
+      
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        
+        glowEffect.style.setProperty('--x', `${x}px`);
+        glowEffect.style.setProperty('--y', `${y}px`);
+        glowEffect.style.opacity = '1';
+        
+        // Tilt effect
+        const xPercent = (x / rect.width - 0.5) * 10;
+        const yPercent = (y / rect.height - 0.5) * 10;
+        
+        gsap.to(card, {
+          rotationY: xPercent,
+          rotationX: -yPercent,
+          duration: 0.5,
+          ease: 'power1.out'
+        });
+      });
+      
+      card.addEventListener('mouseleave', () => {
+        glowEffect.style.opacity = '0';
+        
+        gsap.to(card, {
+          rotationY: 0,
+          rotationX: 0,
+          duration: 0.5,
+          ease: 'power1.out'
+        });
+      });
+    });
+
+    // Filter buttons effect
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    
+    filterButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        filterButtons.forEach(btn => btn.classList.remove('active'));
+        button.classList.add('active');
+      });
+    });
+
+    // Initial animations
+    window.addEventListener('load', () => {
+      gsap.from('.logo', {
+        y: -50,
+        opacity: 0,
+        duration: 1,
+        ease: 'back.out(1.7)'
+      });
+      
+      gsap.from('.nav-link', {
+        y: -30,
+        opacity: 0,
+        stagger: 0.1,
+        duration: 0.8,
+        ease: 'power1.out'
+      });
+      
+      gsap.from('h1', {
+        x: -50,
+        opacity: 0,
+        duration: 1,
+        delay: 0.3,
+        ease: 'power2.out'
+      });
+      
+      gsap.from('.card', {
+        y: 50,
+        opacity: 0,
+        stagger: 0.1,
+        duration: 0.8,
+        delay: 0.5,
+        ease: 'back.out(1.2)'
+      });
+      
+      gsap.from('.add-listing-btn', {
+        scale: 0,
+        opacity: 0,
+        duration: 1,
+        delay: 1.2,
+        ease: 'elastic.out(1, 0.5)',
+        rotation: 180
+      });
+    });
+
+    // Add smooth scroll
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          window.scrollTo({
+            top: target.offsetTop,
+            behavior: 'smooth'
+          });
+        }
+      });
+    });
+
+    // Action buttons hover effect
+    const actionButtons = document.querySelectorAll('.action-btn');
+    
+    actionButtons.forEach(button => {
+      button.addEventListener('mouseenter', () => {
+        gsap.to(button, {
+          scale: 1.1,
+          duration: 0.3
+        });
+      });
+      
+      button.addEventListener('mouseleave', () => {
+        gsap.to(button, {
+          scale: 1,
+          duration: 0.3
+        });
+      });
+    });
+  </script>
+</body>
+</html>

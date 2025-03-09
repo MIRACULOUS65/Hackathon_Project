@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyberpunk Neon Glow</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+        body {
+            background: url('https://source.unsplash.com/1600x900/?cyberpunk,city') no-repeat center center/cover;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            flex-direction: column;
+            position: relative;
+            background-color: black;
+        }
+
+        .text-container {
+            position: absolute;
+            top: 8%;
+            left: 44%;
+            transform: translateX(-50%);
+            text-align: center;
+        }
+
+        .welcome-text {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 20px;
+            color: #58DAFF;
+            text-transform: uppercase;
+            text-shadow: 
+                0 0 5px #2F8BA8,    
+                0 0 10px #2F8BA8, 
+                0 0 20px #58DAFF,  
+                0 0 40px #58DAFF, 
+                0 0 80px #2F8BA8;
+            margin-bottom: -10px;
+        }
+
+        .neon-text {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 50px;
+            color: #58DAFF;
+            text-transform: uppercase;
+            position: relative;
+            text-shadow: 
+                0 0 5px #2F8BA8,    
+                0 0 10px #2F8BA8, 
+                0 0 20px #58DAFF,  
+                0 0 40px #58DAFF, 
+                0 0 80px #2F8BA8;
+            animation: flicker 1.5s infinite alternate, glitch 0.3s infinite;
+        }
+
+        .start-button-container {
+            position: absolute;
+            bottom: 15%;
+            left: 50%;
+            transform: translateX(-50%);
+            perspective: 500px;
+        }
+
+        .start-button {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 24px;
+            color: #FF00FF;
+            text-transform: uppercase;
+            text-shadow: 
+                0 0 5px #A020F0,    
+                0 0 10px #A020F0, 
+                0 0 20px #FF00FF,  
+                0 0 40px #FF00FF, 
+                0 0 80px #A020F0;
+            cursor: pointer;
+            padding: 15px 30px;
+            border: 3px solid #FF00FF;
+            box-shadow: 
+                0 0 10px #FF00FF,
+                0 0 20px rgba(255, 0, 255, 0.5),
+                inset 0 0 10px rgba(255, 0, 255, 0.3);
+            background-color: rgba(0, 0, 0, 0.7);
+            transition: all 0.3s ease;
+            animation: startPulse 2s infinite, startGlow 1.5s infinite alternate;
+            position: relative;
+            transform-style: preserve-3d;
+            text-decoration: none;
+            display: inline-block;
+            letter-spacing: 2px;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .start-button::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                to bottom right, 
+                transparent, 
+                transparent, 
+                transparent, 
+                rgba(255, 0, 255, 0.3), 
+                transparent, 
+                transparent, 
+                transparent
+            );
+            transform: rotate(45deg);
+            animation: shine 3s infinite;
+        }
+
+        .start-button::after {
+            content: '[ PRESS ]';
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 12px;
+            color: #FF00FF;
+            text-shadow: 0 0 5px #FF00FF;
+            opacity: 0.8;
+            animation: blink 1s infinite;
+        }
+
+        .start-button:hover {
+            transform: scale(1.1) translateZ(20px);
+            box-shadow: 
+                0 0 30px #FF00FF,
+                0 0 50px rgba(255, 0, 255, 0.5),
+                inset 0 0 15px rgba(255, 0, 255, 0.5);
+            letter-spacing: 3px;
+        }
+
+        .start-button:active {
+            transform: scale(0.95);
+            box-shadow: 
+                0 0 15px #FF00FF,
+                inset 0 0 15px rgba(255, 0, 255, 0.8);
+        }
+
+        /* Flicker effect */
+        @keyframes flicker {
+            0% { opacity: 1; }
+            50% { opacity: 0.6; }
+            100% { opacity: 1; }
+        }
+
+        /* Pulse animation for the Start button */
+        @keyframes startPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        /* Glow animation for start button */
+        @keyframes startGlow {
+            0% { box-shadow: 0 0 10px #FF00FF, 0 0 20px rgba(255, 0, 255, 0.5); }
+            100% { box-shadow: 0 0 20px #FF00FF, 0 0 40px rgba(255, 0, 255, 0.7); }
+        }
+
+        /* Shine effect for start button */
+        @keyframes shine {
+            0% { transform: rotate(45deg) translateX(-100%); }
+            100% { transform: rotate(45deg) translateX(100%); }
+        }
+
+        /* Blink effect for press text */
+        @keyframes blink {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 0.2; }
+        }
+
+        /* Glitch effect */
+        @keyframes glitch {
+            0% { transform: translate(0); }
+            20% { transform: translate(-3px, 3px); }
+            40% { transform: translate(3px, -3px); }
+            60% { transform: translate(-2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+            100% { transform: translate(0); }
+        }
+
+        /* Blue glitch layer */
+        .neon-text::after {
+            content: "SkillTrade";
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0.7;
+            color: #00ffff;
+            transform: translate(2px, 0);
+            clip-path: inset(30% 0 10% 0);
+            animation: glitch 0.25s infinite alternate;
+        }
+    </style>
+</head>
+<body style="background-image: url(IMAGE/Frame\ 4.png);
+    background-color: black;">
+    
+    <div class="text-container">
+        <p class="welcome-text">WELCOME TO</p>
+        <h1 class="neon-text">SkillTrade</h1>
+    </div>
+
+    <div class="start-button-container">
+        <a href="./homepage.html" class="start-button">START</a>
+    </div>
+
+</body>
+</html>

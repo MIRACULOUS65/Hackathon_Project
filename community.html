@@ -1,0 +1,1199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkillSwap - Community</title>
+    <style>
+:root {
+    --primary: #5D6EF3;
+    --secondary: #5C24FF;
+    --success: #5BE1FF;
+    --warning: #FC4FF6;
+    --danger: #FF3BFF;
+    --light: #ECBFBF;
+    --dark: #000000;
+    --gray: #B8B2FF;
+    --background: #121212;
+    --card-bg: #1E1E1E;
+    --text-primary: #FFFFFF;
+    --text-secondary: #ECBFBF;
+    --border-color: #5C24FF;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: var(--background);
+    color: var(--text-primary);
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+header {
+    background: linear-gradient(135deg, #5C24FF, #FF3BFF);
+    color: white;
+    padding: 20px 0;
+    box-shadow: 0 4px 12px rgba(255, 59, 255, 0.3);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 1.8rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+}
+
+.logo-icon {
+    margin-right: 10px;
+    font-size: 2rem;
+}
+
+.nav-links {
+    display: flex;
+    gap: 30px;
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.nav-links a:hover {
+    color: var(--success);
+}
+
+.nav-links a.active {
+    color: var(--success);
+    font-weight: 600;
+}
+
+.nav-links a.active::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background-color: var(--success);
+    border-radius: 3px;
+}
+
+.user-actions {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.notification-icon {
+    position: relative;
+    cursor: pointer;
+}
+
+.notification-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background-color: var(--danger);
+    color: white;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    font-size: 0.7rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.profile-img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #FF3BFF;
+}
+
+.hero {
+    padding: 60px 0;
+    text-align: center;
+    background: url('/api/placeholder/1200/300') center/cover;
+    background-color: rgba(0, 0, 0, 0.8);
+    background-blend-mode: overlay;
+    color: white;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero h1 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.6s forwards 0.2s;
+    color: var(--success);
+}
+
+.hero p {
+    font-size: 1.2rem;
+    max-width: 700px;
+    margin: 0 auto 30px;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.6s forwards 0.4s;
+    color: var(--text-secondary);
+}
+
+.btn {
+    padding: 12px 24px;
+    border-radius: 30px;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-block;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
+    outline: none;
+}
+
+.btn-primary {
+    background-color: var(--danger);
+    color: white;
+    box-shadow: 0 4px 15px rgba(255, 59, 255, 0.4);
+}
+
+.btn-primary:hover {
+    background-color: #D94FD5;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(255, 59, 255, 0.6);
+}
+
+.search-bar {
+    max-width: 600px;
+    margin: 30px auto;
+    position: relative;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.6s forwards 0.6s;
+}
+
+.search-input {
+    width: 100%;
+    padding: 15px 20px;
+    border-radius: 30px;
+    border: none;
+    box-shadow: 0 4px 12px rgba(255, 59, 255, 0.2);
+    font-size: 1rem;
+    padding-left: 50px;
+    background-color: #2A2A2A;
+    color: var(--text-primary);
+}
+
+.search-icon {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--primary);
+}
+
+.community-content {
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    gap: 30px;
+    margin: 50px 0;
+}
+
+.sidebar {
+    background-color: var(--card-bg);
+    border-radius: 10px;
+    padding: 25px;
+    box-shadow: 0 4px 12px rgba(92, 36, 255, 0.25);
+    height: fit-content;
+    opacity: 0;
+    transform: translateX(-20px);
+    animation: fadeInLeft 0.6s forwards 0.6s;
+    border: 1px solid rgba(92, 36, 255, 0.3);
+}
+
+.sidebar h3 {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+    color: var(--success);
+    padding-bottom: 10px;
+    border-bottom: 1px solid #5C24FF;
+}
+
+.category-list {
+    list-style: none;
+}
+
+.category-item {
+    margin-bottom: 15px;
+    opacity: 0;
+    transform: translateX(-10px);
+}
+
+.category-item a {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-decoration: none;
+    color: var(--text-secondary);
+    padding: 10px 15px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.category-item a:hover {
+    background-color: rgba(92, 36, 255, 0.3);
+    color: var(--success);
+}
+
+.category-item.active a {
+    background-color: var(--primary);
+    color: white;
+}
+
+.category-count {
+    background-color: rgba(255, 59, 255, 0.2);
+    border-radius: 20px;
+    padding: 2px 10px;
+    font-size: 0.8rem;
+    color: var(--warning);
+}
+
+.category-item.active .category-count {
+    background-color: rgba(255, 255, 255, 0.3);
+    color: white;
+}
+
+.trending-topics {
+    margin-top: 40px;
+}
+
+.trending-topic {
+    background-color: rgba(92, 36, 255, 0.2);
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+    transition: all 0.3s ease;
+    opacity: 0;
+    transform: translateY(10px);
+    border: 1px solid rgba(92, 36, 255, 0.3);
+}
+
+.trending-topic:hover {
+    background-color: rgba(92, 36, 255, 0.4);
+    transform: translateY(-2px);
+}
+
+.trending-topic h4 {
+    font-size: 1rem;
+    margin-bottom: 8px;
+    color: var(--success);
+}
+
+.trending-topic p {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin-bottom: 10px;
+}
+
+.topic-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    color: var(--gray);
+}
+
+.main-content {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.6s forwards 0.8s;
+}
+
+.filter-tabs {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 25px;
+    border-bottom: 1px solid #5C24FF;
+    padding-bottom: 15px;
+}
+
+.filter-tab {
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    color: var(--text-secondary);
+}
+
+.filter-tab:hover {
+    background-color: rgba(92, 36, 255, 0.3);
+    color: var(--success);
+}
+
+.filter-tab.active {
+    background-color: var(--primary);
+    color: white;
+}
+
+.post-card {
+    background-color: var(--card-bg);
+    border-radius: 10px;
+    padding: 25px;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 12px rgba(92, 36, 255, 0.25);
+    transition: all 0.3s ease;
+    opacity: 0;
+    transform: translateY(20px);
+    border: 1px solid rgba(92, 36, 255, 0.3);
+}
+
+.post-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 24px rgba(255, 59, 255, 0.3);
+    border-color: var(--danger);
+}
+
+.post-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.post-author-img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 15px;
+    border: 2px solid var(--danger);
+}
+
+.post-info h4 {
+    font-size: 1.1rem;
+    margin-bottom: 5px;
+    color: var(--success);
+}
+
+.post-meta {
+    display: flex;
+    align-items: center;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+.post-category {
+    margin-left: 15px;
+    color: var(--warning);
+    font-weight: 600;
+}
+
+.post-content {
+    margin-bottom: 20px;
+    color: var(--text-secondary);
+}
+
+.post-content p {
+    margin-bottom: 15px;
+}
+
+.post-image {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    object-fit: cover;
+    border: 1px solid rgba(92, 36, 255, 0.3);
+}
+
+.post-actions {
+    display: flex;
+    gap: 20px;
+    padding-top: 15px;
+    border-top: 1px solid #5C24FF;
+}
+
+.post-action {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--gray);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.post-action:hover {
+    color: var(--danger);
+}
+
+.post-action i {
+    font-size: 1.2rem;
+}
+
+.load-more {
+    text-align: center;
+    margin: 40px 0;
+}
+
+.cta-section {
+    background: linear-gradient(135deg, #5C24FF, #FF3BFF);
+    border-radius: 10px;
+    padding: 40px;
+    color: white;
+    margin-bottom: 50px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    opacity: 0;
+    animation: fadeIn 0.8s forwards 1.2s;
+}
+
+.cta-section h2 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: #5BE1FF;
+}
+
+.cta-section p {
+    font-size: 1.1rem;
+    margin-bottom: 30px;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.cta-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.btn-cta {
+    padding: 15px 30px;
+    border-radius: 30px;
+    font-size: 1.1rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.btn-light {
+    background-color: var(--dark);
+    color: var(--success);
+    border: 2px solid var(--success);
+}
+
+.btn-light:hover {
+    background-color: rgba(91, 225, 255, 0.2);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(91, 225, 255, 0.3);
+}
+
+.btn-outline {
+    background-color: transparent;
+    color: white;
+    border: 2px solid #FC4FF6;
+}
+
+.btn-outline:hover {
+    background-color: rgba(252, 79, 246, 0.2);
+    transform: translateY(-2px);
+}
+
+.shape {
+    position: absolute;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.shape-1 {
+    width: 150px;
+    height: 150px;
+    top: -75px;
+    left: -75px;
+}
+
+.shape-2 {
+    width: 100px;
+    height: 100px;
+    bottom: -50px;
+    right: 10%;
+}
+
+.shape-3 {
+    width: 70px;
+    height: 70px;
+    top: 30px;
+    right: 15%;
+}
+
+footer {
+    background-color: #0A0A0A;
+    color: white;
+    padding: 50px 0 20px;
+    border-top: 1px solid #5C24FF;
+}
+
+.footer-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 40px;
+    margin-bottom: 40px;
+}
+
+.footer-column h3 {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+    color: var(--success);
+}
+
+.footer-links {
+    list-style: none;
+}
+
+.footer-links li {
+    margin-bottom: 10px;
+}
+
+.footer-links a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.footer-links a:hover {
+    color: var(--warning);
+}
+
+.social-links {
+    display: flex;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.social-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: rgba(92, 36, 255, 0.3);
+    color: white;
+    transition: all 0.3s ease;
+}
+
+.social-link:hover {
+    background-color: var(--danger);
+    transform: translateY(-3px);
+}
+
+.footer-bottom {
+    text-align: center;
+    padding-top: 20px;
+    border-top: 1px solid rgba(92, 36, 255, 0.3);
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+/* Token System Styles */
+.token-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    background-color: rgba(92, 36, 255, 0.3);
+    border-radius: 20px;
+    padding: 5px 12px;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.token-container:hover {
+    background-color: rgba(252, 79, 246, 0.3);
+}
+
+.token-icon {
+    color: #FC4FF6;
+}
+
+.token-count {
+    font-weight: 600;
+    color: var(--success);
+}
+
+.token-menu {
+    position: absolute;
+    top: 45px;
+    right: 0;
+    width: 300px;
+    background-color: var(--card-bg);
+    border-radius: 10px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 8px 24px rgba(92, 36, 255, 0.4);
+    padding: 20px;
+    z-index: 1000;
+    display: none;
+    transform-origin: top right;
+    animation: scaleIn 0.2s forwards;
+}
+
+.token-menu.show {
+    display: block;
+}
+
+.token-menu h3 {
+    color: var(--success);
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(92, 36, 255, 0.3);
+}
+
+.token-package {
+    background-color: rgba(92, 36, 255, 0.2);
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 12px;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(92, 36, 255, 0.3);
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.token-package:hover {
+    background-color: rgba(92, 36, 255, 0.4);
+    transform: translateY(-2px);
+    border-color: var(--warning);
+}
+
+.package-details h4 {
+    font-size: 1.1rem;
+    color: var(--success);
+    margin-bottom: 5px;
+}
+
+.package-details p {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+.package-price {
+    font-weight: 600;
+    font-size: 1.2rem;
+    color: var(--warning);
+}
+
+.token-footer {
+    padding-top: 10px;
+    margin-top: 10px;
+    border-top: 1px solid rgba(92, 36, 255, 0.3);
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    text-align: center;
+}
+
+.token-footer a {
+    color: var(--success);
+    text-decoration: none;
+}
+
+.token-footer a:hover {
+    text-decoration: underline;
+}
+
+.token-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    color: var(--text-secondary);
+    transition: all 0.3s ease;
+}
+
+.token-close:hover {
+    color: var(--danger);
+    transform: rotate(90deg);
+}
+
+@keyframes scaleIn {
+    from {
+        transform: scale(0.9);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInLeft {
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@media (max-width: 768px) {
+    .community-content {
+        grid-template-columns: 1fr;
+    }
+    
+    .nav-links {
+        display: none;
+    }
+    
+    .hero h1 {
+        font-size: 2rem;
+    }
+    
+    .hero p {
+        font-size: 1rem;
+    }
+    
+    .post-card {
+        padding: 20px;
+    }
+    
+    .cta-section {
+        padding: 30px 20px;
+    }
+    
+    .cta-section h2 {
+        font-size: 1.8rem;
+    }
+
+    .token-menu {
+        width: 280px;
+        right: -70px;
+    }
+}
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js"></script>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">
+                    <i class="fas fa-exchange-alt logo-icon"></i>
+                    <span>SkillSwap</span>
+                </div>
+                <div class="nav-links">
+                    <a href="#">Home</a>
+                    <a href="#">Discover</a>
+                    <a href="#" class="active">Community</a>
+                    <a href="#">Learning Hub</a>
+                    <a href="#">Events</a>
+                </div>
+                <div class="user-actions">
+                    <div class="token-container" id="tokenContainer">
+                        <i class="fas fa-gem token-icon"></i>
+                        <span class="token-count">25</span>
+                        <div class="token-menu" id="tokenMenu">
+                            <i class="fas fa-times token-close" id="closeTokenMenu"></i>
+                            <h3>Purchase Tokens</h3>
+                            <div class="token-package">
+                                <div class="package-details">
+                                    <h4>Starter Pack</h4>
+                                    <p>50 tokens</p>
+                                </div>
+                                <div class="package-price">$5.99</div>
+                            </div>
+                            <div class="token-package">
+                                <div class="package-details">
+                                    <h4>Popular Pack</h4>
+                                    <p>150 tokens</p>
+                                </div>
+                                <div class="package-price">$14.99</div>
+                            </div>
+                            <div class="token-package">
+                                <div class="package-details">
+                                    <h4>Premium Pack</h4>
+                                    <p>500 tokens</p>
+                                </div>
+                                <div class="package-price">$39.99</div>
+                            </div>
+                            <div class="token-footer">
+                                <p>Need more tokens? <a href="#">View all options</a></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="notification-icon">
+                        <i class="far fa-bell fa-lg"></i>
+                        <span class="notification-badge">3</span>
+                    </div>
+                    <img src="/api/placeholder/40/40" alt="Profile" class="profile-img">
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h1>Join Our Skill Trading Community</h1>
+            <p>Connect with like-minded individuals, share your expertise, and learn new skills from passionate community members.</p>
+            <div class="search-bar">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" class="search-input" placeholder="Search discussions, topics, or skills...">
+            </div>
+        </div>
+    </section>
+
+    <div class="container">
+        <div class="community-content">
+            <aside class="sidebar">
+                <div class="categories">
+                    <h3>Categories</h3>
+                    <ul class="category-list">
+                        <li class="category-item active" style="animation: fadeInLeft 0.4s forwards 0.7s;">
+                            <a href="#">
+                                <span>All Topics</span>
+                                <span class="category-count">253</span>
+                            </a>
+                        </li>
+                        <li class="category-item" style="animation: fadeInLeft 0.4s forwards 0.8s;">
+                            <a href="#">
+                                <span>Design Skills</span>
+                                <span class="category-count">78</span>
+                            </a>
+                        </li>
+                        <li class="category-item" style="animation: fadeInLeft 0.4s forwards 0.9s;">
+                            <a href="#">
+                                <span>Programming</span>
+                                <span class="category-count">92</span>
+                            </a>
+                        </li>
+                        <li class="category-item" style="animation: fadeInLeft 0.4s forwards 1.0s;">
+                            <a href="#">
+                                <span>Marketing</span>
+                                <span class="category-count">45</span>
+                            </a>
+                        </li>
+                        <li class="category-item" style="animation: fadeInLeft 0.4s forwards 1.1s;">
+                            <a href="#">
+                                <span>Language Skills</span>
+                                <span class="category-count">31</span>
+                            </a>
+                        </li>
+                        <li class="category-item" style="animation: fadeInLeft 0.4s forwards 1.2s;">
+                            <a href="#">
+                                <span>Music & Arts</span>
+                                <span class="category-count">29</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="trending-topics">
+                    <h3>Trending Topics</h3>
+                    <div class="trending-topic" style="animation: fadeInUp 0.4s forwards 1.0s;">
+                        <h4>UI/UX Design Fundamentals</h4>
+                        <p>Best practices for creating user-friendly interfaces</p>
+                        <div class="topic-meta">
+                            <span>42 posts</span>
+                            <span>12 min ago</span>
+                        </div>
+                    </div>
+                    <div class="trending-topic" style="animation: fadeInUp 0.4s forwards 1.1s;">
+                        <h4>JavaScript Animation Libraries</h4>
+                        <p>Which one is best for web development in 2025?</p>
+                        <div class="topic-meta">
+                            <span>36 posts</span>
+                            <span>1 hour ago</span>
+                        </div>
+                    </div>
+                    <div class="trending-topic" style="animation: fadeInUp 0.4s forwards 1.2s;">
+                        <h4>Virtual Skill Exchange Event</h4>
+                        <p>Join our monthly online meetup this weekend</p>
+                        <div class="topic-meta">
+                            <span>24 posts</span>
+                            <span>3 hours ago</span>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <main class="main-content">
+                <div class="filter-tabs">
+                    <div class="filter-tab active">Latest</div>
+                    <div class="filter-tab">Popular</div>
+                    <div class="filter-tab">Unanswered</div>
+                    <div class="filter-tab">My Topics</div>
+                </div>
+
+                <div class="posts">
+                    <div class="post-card" style="animation: fadeInUp 0.5s forwards 0.9s;">
+                        <div class="post-header">
+                            <img src="/api/placeholder/50/50" alt="User" class="post-author-img">
+                            <div class="post-info">
+                                <h4>Alex Morgan</h4>
+                                <div class="post-meta">
+                                    <span>Posted 2 hours ago</span>
+                                    <span class="post-category">Programming</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="post-content">
+                            <h3>Looking for React Native mentorship exchange</h3>
+                            <p>I'm an experienced web developer looking to expand my skills into mobile development with React Native. Would love to connect with someone who can guide me through best practices and common pitfalls.</p>
+                            <p>In exchange, I can offer mentorship in advanced CSS animations, responsive design, or server-side rendering with Next.js.</p>
+                            <img src="/api/placeholder/800/300" alt="React Native Code" class="post-image">
+                        </div>
+                        <div class="post-actions">
+                            <div class="post-action">
+                                <i class="far fa-thumbs-up"></i>
+                                <span>42</span>
+                            </div>
+                            <div class="post-action">
+                                <i class="far fa-comment"></i>
+                                <span>18</span>
+                            </div>
+                            <div class="post-action">
+                                <i class="far fa-bookmark"></i>
+                                <span>Save</span>
+                            </div>
+                            <div class="post-action">
+                                <i class="fas fa-share-alt">
+                                    <span>Share</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="post-card" style="animation: fadeInUp 0.5s forwards 1.0s;">
+                        <div class="post-header">
+                            <img src="/api/placeholder/50/50" alt="User" class="post-author-img">
+                            <div class="post-info">
+                                <h4>Jamie Chen</h4>
+                                <div class="post-meta">
+                                    <span>Posted yesterday</span>
+                                    <span class="post-category">Design Skills</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="post-content">
+                            <h3>Offering Adobe Illustrator masterclass for copywriting help</h3>
+                            <p>I'm a professional graphic designer with 8+ years of experience in Adobe Illustrator. I'm looking to trade my design skills for some help with copywriting for my new portfolio website.</p>
+                            <p>I can teach advanced vector techniques, logo design principles, or custom illustration methods. Let's connect!</p>
+                            <img src="/api/placeholder/800/300" alt="Vector Design" class="post-image">
+                        </div>
+                        <div class="post-actions">
+                            <div class="post-action">
+                                <i class="far fa-thumbs-up"></i>
+                                <span>36</span>
+                            </div>
+                            <div class="post-action">
+                                <i class="far fa-comment"></i>
+                                <span>24</span>
+                            </div>
+                            <div class="post-action">
+                                <i class="far fa-bookmark"></i>
+                                <span>Save</span>
+                            </div>
+                            <div class="post-action">
+                                <i class="fas fa-share-alt"></i>
+                                <span>Share</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="post-card" style="animation: fadeInUp 0.5s forwards 1.1s;">
+                        <div class="post-header">
+                            <img src="/api/placeholder/50/50" alt="User" class="post-author-img">
+                            <div class="post-info">
+                                <h4>Taylor Wilson</h4>
+                                <div class="post-meta">
+                                    <span>Posted 3 days ago</span>
+                                    <span class="post-category">Language Skills</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="post-content">
+                            <h3>Spanish conversations for Python tutoring</h3>
+                            <p>¡Hola a todos! I'm a native Spanish speaker looking to improve my Python programming skills. I can offer conversation practice, pronunciation coaching, or even translation help.</p>
+                            <p>In return, I'm seeking someone who can tutor me in Python, particularly in data analysis with pandas and matplotlib. Beginners welcome!</p>
+                        </div>
+                        <div class="post-actions">
+                            <div class="post-action">
+                                <i class="far fa-thumbs-up"></i>
+                                <span>29</span>
+                            </div>
+                            <div class="post-action">
+                                <i class="far fa-comment"></i>
+                                <span>15</span>
+                            </div>
+                            <div class="post-action">
+                                <i class="far fa-bookmark"></i>
+                                <span>Save</span>
+                            </div>
+                            <div class="post-action">
+                                <i class="fas fa-share-alt"></i>
+                                <span>Share</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="load-more">
+                    <a href="#" class="btn btn-primary">Load More Posts</a>
+                </div>
+            </main>
+        </div>
+
+        <section class="cta-section">
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+            <div class="shape shape-3"></div>
+            <h2>Ready to Share Your Skills?</h2>
+            <p>Start your own skill exchange journey today. Post what you can teach, discover what you want to learn, and connect with our growing community of skill-sharers.</p>
+            <div class="cta-buttons">
+                <a href="#" class="btn btn-cta btn-light">
+                    <i class="fas fa-edit"></i>
+                    Create New Post
+                </a>
+                <a href="#" class="btn btn-cta btn-outline">
+                    <i class="fas fa-user-plus"></i>
+                    Complete Profile
+                </a>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>SkillSwap</h3>
+                    <p>The community platform for exchanging skills and knowledge in a token-based ecosystem.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Explore</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Community Guidelines</a></li>
+                        <li><a href="#">How It Works</a></li>
+                        <li><a href="#">Premium Features</a></li>
+                        <li><a href="#">Success Stories</a></li>
+                        <li><a href="#">Skill Categories</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Resources</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Token System</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Events Calendar</a></li>
+                        <li><a href="#">Support</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Legal</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Cookie Policy</a></li>
+                        <li><a href="#">Copyright</a></li>
+                        <li><a href="#">Accessibility</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 SkillSwap. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Animate category items
+        document.querySelectorAll('.category-item').forEach((item, index) => {
+            setTimeout(() => {
+                item.style.opacity = '1';
+                item.style.transform = 'translateX(0)';
+            }, 700 + (index * 100));
+        });
+
+        // Animate trending topics
+        document.querySelectorAll('.trending-topic').forEach((item, index) => {
+            setTimeout(() => {
+                item.style.opacity = '1';
+                item.style.transform = 'translateY(0)';
+            }, 1000 + (index * 100));
+        });
+
+        // Animate post cards
+        document.querySelectorAll('.post-card').forEach((item, index) => {
+            setTimeout(() => {
+                item.style.opacity = '1';
+                item.style.transform = 'translateY(0)';
+            }, 900 + (index * 100));
+        });
+
+        // Token menu toggle
+        const tokenContainer = document.getElementById('tokenContainer');
+        const tokenMenu = document.getElementById('tokenMenu');
+        const closeTokenMenu = document.getElementById('closeTokenMenu');
+
+        tokenContainer.addEventListener('click', () => {
+            tokenMenu.classList.toggle('show');
+        });
+
+        closeTokenMenu.addEventListener('click', (e) => {
+            e.stopPropagation();
+            tokenMenu.classList.remove('show');
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!tokenContainer.contains(e.target)) {
+                tokenMenu.classList.remove('show');
+            }
+        });
+    </script>
+</body>
+</html>

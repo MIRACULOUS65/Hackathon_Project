@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web 3.0 Education Platform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+        
+        body {
+            background-color: #121212;
+            color: white;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header styles */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 25px 0;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .nav-links a {
+            color: #6ba6ff;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        
+        .nav-links a:first-child {
+            color: white;
+        }
+        
+        .search-container {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .search-bar {
+            background-color: #333;
+            border: none;
+            border-radius: 20px;
+            padding: 8px 15px;
+            color: white;
+            width: 250px;
+        }
+        
+        .btn {
+            border-radius: 5px;
+            padding: 8px 15px;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        
+        .btn-primary {
+            background-color: #4169E1;
+            color: white;
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            color: #4de4ce;
+            border: 1px solid #4de4ce;
+        }
+        
+        /* Hero section */
+        .hero {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 60px 0;
+        }
+        
+        .hero-content {
+            max-width: 550px;
+        }
+        
+        .hero h1 {
+            font-size: 38px;
+            margin-bottom: 20px;
+            color: #4de4ce;
+        }
+        
+        .hero p {
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 25px;
+            color: #ccc;
+        }
+        
+        .hero-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .hero-image {
+            background-color: #1a103f;
+            width: 350px;
+            height: 285px;
+            border-radius: 35px;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+        .hero-image img {
+            width: 350px;
+            height: 300px;
+        }
+        
+        .hero-image h2 {
+            font-size: 48px;
+            color: #bb66ff;
+            text-shadow: 0 0 15px #bb66ff;
+            z-index: 2;
+        }
+        
+        .purple-glow {
+            position: absolute;
+            bottom: 0;
+            height: 40%;
+            width: 100%;
+            background: linear-gradient(to top, #8e44ad, transparent);
+            opacity: 0.6;
+        }
+        
+        /* Courses section */
+        .courses {
+            padding: 50px 0;
+        }
+        
+        .section-title {
+            font-size: 36px;
+            margin-bottom: 40px;
+            text-align: center;
+            color: #4de4ce;
+        }
+        
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 20px;
+        }
+        
+        .course-card {
+            background-color: #1e1e1e;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+        
+        .course-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .course-image {
+            width: 100%;
+            height: 140px;
+            background-color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+        
+        .course-tag {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: #6f42c1;
+            color: white;
+            font-size: 10px;
+            padding: 3px 8px;
+            border-radius: 3px;
+            text-transform: uppercase;
+        }
+        
+        .course-content {
+            padding: 15px;
+        }
+        
+        .course-title {
+            font-size: 14px;
+            margin-bottom: 15px;
+            line-height: 1.3;
+        }
+        
+        .instructor {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .instructor-image {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: #444;
+        }
+        
+        .instructor-info {
+            font-size: 12px;
+            color: #aaa;
+        }
+        
+        .instructor-name {
+            font-weight: bold;
+        }
+        
+        /* Features section */
+        .features {
+            padding: 50px 0;
+        }
+        
+        .features-grid {
+            display: flex;
+            justify-content: space-around;
+            text-align: center;
+            margin-top: 30px;
+        }
+        
+        .feature-item {
+            max-width: 200px;
+        }
+        
+        .feature-icon {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 20px;
+        }
+        
+        .feature-title {
+            color: #4de4ce;
+            margin-bottom: 10px;
+            font-size: 16px;
+            text-transform: uppercase;
+        }
+        
+        /* Footer */
+        footer {
+            margin-top: 50px;
+            padding: 50px 0;
+            border-top: 1px solid #333;
+        }
+        
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            gap: 30px;
+        }
+        
+        .footer-column h4 {
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+        
+        .footer-column ul {
+            list-style: none;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-column ul li a {
+            color: #aaa;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        
+        .copyright {
+            margin-top: 30px;
+            font-size: 12px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <div class="nav-links">
+                <a href="#">Home</a>
+                <a href="#">Features</a>
+                <a href="#">Pricing</a>
+                <a href="#">FAQs</a>
+                <a href="#">About</a>
+            </div>
+            <div class="search-container">
+                <input type="text" class="search-bar" placeholder="Search...">
+                <button class="btn btn-primary">Sign-up</button>
+                <button class="btn btn-outline">Login</button>
+            </div>
+        </header>
+        
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-content">
+                <h1>Responsive left-aligned hero with image</h1>
+                <p>Quickly design and customize responsive mobile-first sites with Bootstrap, the world's most popular front-end open-source toolkit, featuring Sass variables and mixins, responsive grid system, extensive prebuilt components, and powerful JavaScript plugins.</p>
+                <div class="hero-buttons">
+                    <button class="btn btn-primary">Primary</button>
+                    <button class="btn btn-outline">Default</button>
+                </div>
+            </div>
+            <div class="hero-image">
+                <h2><img src="./IMAGE/WhatsApp Image 2025-03-09 at 07.09.32_44134cd8.jpg" alt="" srcset=""></h2>
+                <div class="purple-glow">
+                </div>
+            </div>
+        </section>
+        
+        <!-- Courses Section -->
+        <section class="courses">
+            <h2 class="section-title"><a href="./courses.html" target="_blank" rel="noopener noreferrer">All Courses</a></h2>
+            <div class="courses-grid">
+                <!-- Course 1 -->
+                <div class="course-card">
+                    <div class="course-image">
+                        <span class="course-tag">Frontend</span>
+                    </div>
+                    <div class="course-content">
+                        <h3 class="course-title">Beginner's Guide To Becoming A Professional Frontend Developer</h3>
+                        <div class="instructor">
+                            <div class="instructor-image"></div>
+                            <div class="instructor-info">
+                                <div class="instructor-name">Prashant Kumar Singh</div>
+                                <div>Software Developer</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Course 2 -->
+                <div class="course-card">
+                    <div class="course-image">
+                        <span class="course-tag">Backend</span>
+                    </div>
+                    <div class="course-content">
+                        <h3 class="course-title">Beginner's Guide To Becoming A Professional Frontend Developer</h3>
+                        <div class="instructor">
+                            <div class="instructor-image"></div>
+                            <div class="instructor-info">
+                                <div class="instructor-name">Prashant Kumar Singh</div>
+                                <div>Software Developer</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Course 3 -->
+                <div class="course-card">
+                    <div class="course-image">
+                        <span class="course-tag">Frontend</span>
+                    </div>
+                    <div class="course-content">
+                        <h3 class="course-title">Beginner's Guide To Becoming A Professional Frontend Developer</h3>
+                        <div class="instructor">
+                            <div class="instructor-image"></div>
+                            <div class="instructor-info">
+                                <div class="instructor-name">Prashant Kumar Singh</div>
+                                <div>Software Developer</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Course 4 -->
+                <div class="course-card">
+                    <div class="course-image">
+                        <span class="course-tag">Frontend</span>
+                    </div>
+                    <div class="course-content">
+                        <h3 class="course-title">Beginner's Guide To Becoming A Professional Frontend Developer</h3>
+                        <div class="instructor">
+                            <div class="instructor-image"></div>
+                            <div class="instructor-info">
+                                <div class="instructor-name">Prashant Kumar Singh</div>
+                                <div>Software Developer</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Course 5 -->
+                <div class="course-card">
+                    <div class="course-image">
+                        <span class="course-tag">Backend</span>
+                    </div>
+                    <div class="course-content">
+                        <h3 class="course-title">Beginner's Guide To Becoming A Professional Frontend Developer</h3>
+                        <div class="instructor">
+                            <div class="instructor-image"></div>
+                            <div class="instructor-info">
+                                <div class="instructor-name">Prashant Kumar Singh</div>
+                                <div>Software Developer</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Features Section -->
+        <section class="features">
+            <h2 class="section-title">Features</h2>
+            <div class="features-grid">
+                <!-- Feature 1 -->
+                <div class="feature-item">
+                    <img src="./IMAGE/WhatsApp Image 2025-03-09 at 07.09.32_d1ca3985.jpg" alt="Reviews" class="feature-icon">
+                    <h3 class="feature-title"><a href="./community.html" target="_blank" rel="noopener noreferrer">REVIEWS</a></h3>
+                </div>
+                
+                <!-- Feature 2 -->
+                <div class="feature-item">
+                    <img src="./IMAGE/WhatsApp Image 2025-03-09 at 07.09.32_0773cf82.jpg" alt="AI Chatbot" class="feature-icon">
+                    <h3 class="feature-title"><a href="./chat.html" target="_blank" rel="noopener noreferrer">AI CHATBOT</a></h3>
+                </div>
+                
+                <!-- Feature 3 -->
+                <div class="feature-item">
+                    <img src="./IMAGE/" alt="Blockchain Rewards" class="feature-icon">
+                    <h3 class="feature-title"><a href="./new_payment_page.html" target="_blank" rel="noopener noreferrer">BLOCKCHAIN<br>BASED REWARDS</a></h3>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Footer -->
+        <footer>
+            <div class="footer-grid">
+                <div class="footer-column">
+                    <p class="copyright">© 2017-2024</p>
+                </div>
+                
+                <div class="footer-column">
+                    <h4>Features</h4>
+                    <ul>
+                        <li><a href="#">Cool stuff</a></li>
+                        <li><a href="#">Random feature</a></li>
+                        <li><a href="#">Team feature</a></li>
+                        <li><a href="#">Stuff for developers</a></li>
+                        <li><a href="#">Another one</a></li>
+                        <li><a href="#">Last time</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="#">Resource</a></li>
+                        <li><a href="#">Resource name</a></li>
+                        <li><a href="#">Another resource</a></li>
+                        <li><a href="#">Final resource</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h4>About</h4>
+                    <ul>
+                        <li><a href="#">Team</a></li>
+                        <li><a href="#">Locations</a></li>
+                        <li><a href="#">Privacy</a></li>
+                        <li><a href="#">Terms</a></li>
+                    </ul>
+                </div>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>
